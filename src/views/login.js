@@ -15,7 +15,7 @@ class Login extends React.Component {
         console.log('Senha: ', this.state.senha)
     }
     
-    preparaCadastrar = () => {
+    prepareCadastrar = () => {
         this.props.history.push('/cadastro-usuarios')
     }
     
@@ -51,7 +51,7 @@ class Login extends React.Component {
                                                         placeholder="Password" />
                                             </FormGroup>
                                             <button  onClick={this.entrar} className="btn btn-success">Entrar</button>
-                                            <button  onClick={this.preparaCadastrar} className="btn btn-danger">Cadastrar</button>
+                                            <button  onClick={this.prepareCadastrar} className="btn btn-danger">Cadastrar</button>
                                   
                                         </fieldset>
                                     </div>
