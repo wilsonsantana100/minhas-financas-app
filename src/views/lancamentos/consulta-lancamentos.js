@@ -9,6 +9,9 @@ import LancamentoService from '../../app/service/lancamentoService'
 import LocalStorageService from '../../app/service/localstorageService'
 import * as messages from '../../components/toastr'
 
+import { Dialog } from 'primereact/dialog';
+ 
+
 
 class ConsultaLancamentos extends React.Component{
     
@@ -18,6 +21,7 @@ class ConsultaLancamentos extends React.Component{
         mes: '',
         tipo: '',
         descricao: '',
+        showConfirmDialog: true,
         lancamentos: []
     }
 
@@ -58,12 +62,18 @@ class ConsultaLancamentos extends React.Component{
         console.log('Editando o lancamento', id)
     }
 
-    deletar = (id) => {
-
-        const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
-        
-
-        console.log('Deletando o lancamento', id)
+    deletar = ( lancamento ) => {
+        this.service
+            .deletar(lancamento.id)
+            .then(response => {
+                const lancamentos = this.state.lancamentos;
+                const index = lancamentos.indexOf(lancamento)
+                lancamentos.splice(index, 1);
+                this.setState(lancamentos)
+                messages.mensagemSucesso('Lançamento deletado com sucesso!')
+            }).catch(error  => {
+                messages.mensagemErro('Ocorreu um erro ao tentar deletar o Lançamento')
+            })
     }
 
     
@@ -132,8 +142,15 @@ class ConsultaLancamentos extends React.Component{
                     
                     </div>
                 </div>
-
-
+                <div>
+                    <Dialog header="Confirmação"
+                            visible={this.state.showConfirmDialog} 
+                            style={{ width: '50vw' }} 
+                            modal={true}
+                            onHide={() => this.setState({showConfirmDialog: false})}>
+                        <p>Confirma a exclusão deste Lançamento?</p>
+                    </Dialog>
+                </div>
             </Card>  
         )
     }
