@@ -33,9 +33,7 @@ export default class LancamentoService extends ApiService{
     }
 
     consultar(lancamentoFiltro){
-        
-        
-
+     
         let params = `?ano=${lancamentoFiltro.ano}`
 
         if(lancamentoFiltro.mes){
@@ -58,7 +56,6 @@ export default class LancamentoService extends ApiService{
             params = `${params}&descricao=${lancamentoFiltro.descricao}`
         }
 
-
         return this.get(params) 
 
     }
@@ -68,7 +65,9 @@ export default class LancamentoService extends ApiService{
     }
 
     
-    
+    salvar(lancamento){
+        return this.post('/', lancamento);
+    }
 
 
 }
