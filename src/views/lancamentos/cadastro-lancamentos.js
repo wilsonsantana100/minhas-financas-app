@@ -25,7 +25,7 @@ class CadastroLancamentos extends React.Component{
         ano: '',
         tipo: '',
         status: '',
-        showConfirmDialog: false
+        usuario: null
         
     }
 
@@ -34,11 +34,25 @@ class CadastroLancamentos extends React.Component{
         this.service = new LancamentoService();
     }
 
+
+    componentDidMount(){
+        const params = this.props.match.params
+
+        if(params.id){
+            this.service
+                .obterPorid(params.id)
+                .then(response => {
+                    this.setState( {...response.data})
+                })
+                .catch(erros => {
+                    messages.mensagemErro(erros.response.data)
+                })
+        }
+    }
        
     cadastrar = () => {
         
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado')
-
         const { descricao, valor, mes, ano, tipo } = this.state;
         const lancamento = { descricao, valor, mes, ano, tipo, usuario: usuarioLogado.id };
         
@@ -51,10 +65,27 @@ class CadastroLancamentos extends React.Component{
             })
     }
 
+    atualizar = () => {
+
+        const { descricao, valor, mes, ano, tipo, status, id, usuario } = this.state;
+        const lancamento = { descricao, valor, mes, ano, tipo, status, id, usuario };
+        
+        this.service.atualizar(lancamento)
+            .then( response => {
+                messages.mensagemSucesso('Lancamento atualizado com sucesso!')
+                this.props.history.push('/consulta-lancamentos')
+            }).catch(error => {
+                messages.mensagemErro(error.response.data)
+            })
+
+
+
+    }
+
 
 
     cancelar = () => {
-        this.props.history.push('/login')
+        this.props.history.push('/consulta-lancamentos')
     }
 
     handleChange = (event) => {
@@ -152,6 +183,7 @@ class CadastroLancamentos extends React.Component{
                 <div className="row">
                     <div className="col-md-6">
                         <button onClick={this.cadastrar}   className="btn btn-success">Salvar</button>
+                        <button onClick={this.atualizar}   className="btn btn-primary">Atualizar</button>
                         <button onClick={this.cancelar} className="btn btn-danger">Cancelar</button>
                     </div>
                 </div>
