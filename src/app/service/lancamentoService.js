@@ -70,6 +70,10 @@ export default class LancamentoService extends ApiService{
         return this.get(`/${id}`);
     }
 
+    validar(lancamento){
+        
+    }
+
     salvar(lancamento){
         return this.post('/', lancamento);
     }
