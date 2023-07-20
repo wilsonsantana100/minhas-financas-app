@@ -53,12 +53,16 @@ class ConsultaLancamentos extends React.Component{
        this.service
             .consultar(lancamentoFiltro)
             .then( resposta => {
-                this.setState({ lancamentos: resposta.data})
+                const lista = resposta.data;
+                
+                if(lista.length < 1){
+                    messages.mensagemAlerta("Nenhum resultado encontrado.");
+                }
+                this.setState({ lancamentos: lista })
             }).catch( error => {
                 console.log(error)
             })
-
-    }
+    }       
     
     editar = (id) => {
        this.props.history.push(`/cadastro-lancamentos/${id}`)
@@ -96,7 +100,7 @@ class ConsultaLancamentos extends React.Component{
     
     render(){
 
-        const meses = this.service.obetrListaMeses();
+        const meses = this.service.obterListaMeses();
         const tipos = this.service.obterListaTipos();
 
         const confirmDialogfooter = (

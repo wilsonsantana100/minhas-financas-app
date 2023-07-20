@@ -6,7 +6,7 @@ export default class LancamentoService extends ApiService{
         super('/api/lancamentos')
     }
     
-    obetrListaMeses(){
+    obterListaMeses(){
         return [
             { label: 'Selecione...', value: ''},
             { label: 'Janeiro', value: 1},
@@ -66,7 +66,7 @@ export default class LancamentoService extends ApiService{
     }
 
     
-    obterPorid(id){
+    obterPorId(id){
         return this.get(`/${id}`);
     }
 
